@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+    the-secret-ingredient-frontend:
+        build:
+            context: .
+        container_name: the-secret-ingredient-frontend
+        ports:
+            - '80:80'
+        restart: unless-stopped
+        networks:
+            - the-secret-ingredient-frontend
+
+networks:
+    the-secret-ingredient-frontend:
+        driver: bridge

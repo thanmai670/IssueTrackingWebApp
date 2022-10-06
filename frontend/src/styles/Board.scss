@@ -1,0 +1,187 @@
+$font-stack: 'Nunito';
+$light-color: #f4f4f4;
+// $primary-color: #0e6cff;
+$primary-color: #ffffff;
+$secondary-color: #ff8700;
+
+body{
+    background-color: #1a1919;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+
+
+
+// %btn {
+//     display: inline-block;
+//     border-radius: 5px;
+//     padding: 8px 20px;
+//     margin: 3px;
+
+//     &:hover {
+//         transform: scale(.98);
+//     }
+// }
+%backImg{
+    background-image: url("https://images.unsplash.com/photo-1466971060667-16467c7d04ee?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMzU2NTR8MHwxfHNlYXJjaHw3NjF8fGxhbmRzY2FwZXxlbnwwfHx8fDE2NTUxOTYxNTM&ixlib=rb-1.2.1&q=80");
+}
+
+%btn{
+    position: relative;
+    display: inline-block;
+    padding: 10px 10px;
+    margin: 40px 0;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    margin-right: 50px;
+    background-color: #4d504b;
+}
+%btn:hover{
+    background: rgb(177, 169, 169);
+    color: #050801;
+    box-shadow: 0 0 5px #d7ecff,
+                0 0 25px #b9b3f1,
+                0 0 50px #919ddf,
+                0 0 200px #8485b4;
+     -webkit-box-reflect:below 1px linear-gradient(transparent, #0005);
+
+}
+//#03e9f4;
+%btn{
+    filter: hue-rotate(270deg);
+}
+%btn span{
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,transparent,#03e9f4);
+    animation: animate1 1s linear infinite;
+    @keyframes animate1{
+        0%{
+            left: -100%;
+        }
+        50%,100%{
+            left: 100%;
+        }
+    }
+}
+
+
+
+.horizontalList{
+    float: left;
+    padding: 0.8rem;
+    margin: 0.2rem;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    border-radius: 5px;
+    border-style:hidden;
+    font-family: 'Nunito';
+    background-color: #414440;
+    color: #fff;   
+ 
+    
+}
+
+
+.horizontalList:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.issueList{
+//     padding: 0.2rem;
+//     margin: 0.1rem;
+//     border-radius: 5px;
+//     border-style:groove;
+//     box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+//     transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+//   padding: 14px 80px 18px 36px;
+//   cursor: pointer;
+    border-style: ridge;
+    border-color: #414440;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08),0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+    padding: 2px 80px 2px 36px;
+    cursor: pointer;
+    background-color:rgb(61, 63, 63) ;
+    text-align: left;
+       
+}
+.issueList:hover{
+    // box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.btn-primary {
+    @extend %btn;
+    // background-color: lighten($secondary-color, 10%);
+    // set-background:lighten($secondary-color, 10%);
+    // color: $primary-color;
+    // border: none;   
+}
+
+.btn-secondary {
+    @extend %btn;
+    // background-color:lighten($secondary-color, 10%);
+    // set-background:lighten($secondary-color, 10%);
+    // color: $primary-color;
+    // border: none;
+}
+
+.divScroll {
+    padding: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#inputModal{
+    display: inline-block;
+    width: 300px;
+    height: 40px;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding: 10px 10px 10px 100px;
+    transition: all 0.1s ease-out;
+    text-size-adjust: none;
+  }
+  #inputModal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    line-height: 40px;
+    color: white;
+    border-radius: 3px 0 0 3px;
+    padding: 0 20px;
+    background: transparent;
+    transform: translateZ(0) translateX(0);
+    transition: all 0.3s ease-in;
+    transition-delay: 0.2s;
+  }
+  
+  #inputModal:focus{
+    // transform: translateY(-120%) translateX(0%);
+    border-radius: 3px;
+    transition: all 0.1s ease-out;
+  }
+  
+  #inputModal:focus{
+    padding: 10px;
+    transition: all 0.3s ease-out;
+    transition-delay: 0.2s;
+  }
+

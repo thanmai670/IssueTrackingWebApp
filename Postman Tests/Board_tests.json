@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "e021c1c3-5b7c-49ae-8443-d917de457ed6",
+		"name": "Board Monitoring  Pack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5633120"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const user = JSON.parse(responseBody)._id;\r",
+							"const usrName = JSON.parse(responseBody).username;\r",
+							"const emailId = JSON.parse(responseBody).email;\r",
+							"\r",
+							"if(user){\r",
+							"     pm.environment.set('uID', user)\r",
+							"}\r",
+							"\r",
+							"if (usrName){\r",
+							"    pm.environment.set('usrname',usrName)\r",
+							"}\r",
+							"\r",
+							"if (emailId){\r",
+							"    pm.environment.set('email',emailId)\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"{{$randomFirstName}}\",\r\n    \"password\":\"test123\",\r\n    \"passwordCheck\":\"test123\",\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/register",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jt = JSON.parse(responseBody).jwt;\r",
+							"\r",
+							"if(jt){\r",
+							"     pm.environment.set('Jwt_token', jt)\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const t = pm.environment.get('uID')\r",
+							"console.log(t)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"{{usrname}}\",\r\n    \"password\":\"test123\",\r\n    \"email\":\"{{email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/login",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateBoard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const brd = JSON.parse(responseBody).board._id;\r",
+							"\r",
+							"if(brd){\r",
+							"     pm.environment.set('bID', brd)\r",
+							"}\r",
+							"console.log(brd)\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const t = pm.environment.get('uID')\r",
+							"pm.environment.set('uID',t)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Board\",\r\n    \"uId\": \"{{uID}}\",\r\n    \"image\":\" \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Board",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Board"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCreatedBoard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Boards/{{uID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Boards",
+						"{{uID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const lst = JSON.parse(responseBody).list._id;\r",
+							"\r",
+							"if(lst){\r",
+							"     pm.environment.set('lsID', lst)\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"First  List\",\r\n    \"bId\":\"{{bID}}\",\r\n    \"order\":\"test\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/List",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"List"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/board/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"board",
+						"{{bID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDeletedBoard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Boards/{{uID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Boards",
+						"{{uID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

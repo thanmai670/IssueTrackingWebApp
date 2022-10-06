@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+    mongodb-master:
+        image: mongo
+        container_name: mongodb-master
+        volumes:
+            - './data:/data'
+        networks:
+            - the-secret-ingredient-backend
+        ports:
+            - '27017:27017'
+
+    the-secret-ingredient-backend:
+        build:
+            context: .
+        container_name: the-secret-ingredient-backend
+        restart: unless-stopped
+        depends_on:
+            - mongodb-master
+        networks:
+            - the-secret-ingredient-backend
+        ports:
+            - ${APP_PORT}:${APP_PORT}
+        environment:
+            - MONGODB_CONNECT_STRING=mongodb://mongodb-master:27017
+            # - MONGODB_CONNECT_STRING=${MONGODB_CONNECT_STRING}
+
+networks:
+    backend:
+        driver: the-secret-ingredient-backend

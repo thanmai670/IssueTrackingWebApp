@@ -1,0 +1,57 @@
+{
+	"id": "e1143080-9d10-4f3f-9a70-9d0b5dbdd3cf",
+	"name": "Production",
+	"values": [
+		{
+			"key": "Base_Url",
+			"value": "https://the-secret-ingredient.deno.dev",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Jwt_token",
+			"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTQyODgzNjcsImlzcyI6ImFuaSJ9.7Rvm4vpnR3HP6hPv4t0zMbiVFNll2Ck92c-6wYhqZM1f3jVcx3mNeZ8t2ikQBMaEuWJ15rPzuODO1-mAO84Dog",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "uID",
+			"value": "test",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "lsID",
+			"value": "test",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "bID",
+			"value": "test",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "usrname ",
+			"value": "test",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "email",
+			"value": "test",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "usrname",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2022-06-09T18:06:40.467Z",
+	"_postman_exported_using": "Postman/9.20.3"
+}

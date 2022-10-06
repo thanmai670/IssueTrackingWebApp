@@ -1,0 +1,1233 @@
+{
+	"info": {
+		"_postman_id": "e071e527-efbe-44b6-abf2-021cb7c033b6",
+		"name": "Complete ApI Pack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5633120"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const user = JSON.parse(responseBody)._id;\r",
+							"const usrName = JSON.parse(responseBody).username;\r",
+							"const emailId = JSON.parse(responseBody).email;\r",
+							"\r",
+							"if(user){\r",
+							"     pm.environment.set('uID', user)\r",
+							"}\r",
+							"\r",
+							"if (usrName){\r",
+							"    pm.environment.set('usrname',usrName)\r",
+							"}\r",
+							"\r",
+							"if (emailId){\r",
+							"    pm.environment.set('email',emailId)\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"{{$randomFirstName}}\",\r\n    \"password\":\"test123\",\r\n    \"passwordCheck\":\"test123\",\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/register",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"register"
+					]
+				},
+				"description": "This endpoint is used to register a new user on to the database.\n\nBy passing the appropriate parameters in the body you are able to register a new user.\n\nParameters:\n\nUsername,\n\npassword,\n\npasswordCheck,\n\nemail,"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jt = JSON.parse(responseBody).jwt;\r",
+							"\r",
+							"if(jt){\r",
+							"     pm.environment.set('Jwt_token', jt)\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const t = pm.environment.get('uID')\r",
+							"console.log(t)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"{{usrname}}\",\r\n    \"password\":\"test123\",\r\n    \"email\":\"{{email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/login",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "This endpoint is used to login already registered users.\n\nThe parameters to be passed in the body:\n\nemail / username;\n\npassword"
+			},
+			"response": []
+		},
+		{
+			"name": "CreateBoard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const brd = JSON.parse(responseBody).board._id;\r",
+							"\r",
+							"if(brd){\r",
+							"     pm.environment.set('bID', brd)\r",
+							"}\r",
+							"console.log(brd)\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const t = pm.environment.get('uID')\r",
+							"pm.environment.set('uID',t)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Board\",\r\n    \"uId\": \"{{uID}}\",\r\n    \"image\":\" \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Board",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Board"
+					]
+				},
+				"description": "This endpoint is used to create a new project management board .\n\nParameters to be passed in the body :\n\nname,\n\nuId(refers to userId generated during the register)\n\nimage"
+			},
+			"response": []
+		},
+		{
+			"name": "CreateList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const lst = JSON.parse(responseBody).list._id;\r",
+							"\r",
+							"if(lst){\r",
+							"     pm.environment.set('lsID', lst)\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"First  List\",\r\n    \"bId\":\"{{bID}}\",\r\n    \"order\":\"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/List",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"List"
+					]
+				},
+				"description": "This endpoint is used to create a new List .\n\nParameters to be passed in the body :\n\nname,\n\nbId(refers to board Id generated during the createBoard)\n\norder."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const crd = JSON.parse(responseBody).card._id;\r",
+							"\r",
+							"if(crd){\r",
+							"     pm.environment.set('cID', crd)\r",
+							"}\r",
+							"\r",
+							"console.log(crd);\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"First  Card\",\r\n    \"order\": 0,\r\n    \"bId\":\"{{bID}}\",\r\n    \"lId\":\"{{lsID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Card",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Card"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const act = JSON.parse(responseBody).activity._id;\r",
+							"\r",
+							"if(act){\r",
+							"     pm.environment.set('aID', act)\r",
+							"}\r",
+							"\r",
+							"console.log(act);\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\":\"important Activity 1\",\r\n    \"bId\":\"{{bID}}\",\r\n    \"cId\":\"{{cID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Activity",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Activity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllBoards for a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Boards/{{uID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Boards",
+						"{{uID}}"
+					]
+				},
+				"description": "This endpoint is used to fetch all the boards created by a user by just passing the userID ."
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllLists based on Board ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Board/lists/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Board",
+						"lists",
+						"{{bID}}"
+					]
+				},
+				"description": "This endpoint is used to fetch all lists that belong to a particular board. The boardID must be passed on as a parameter to fetch all the list present in that board."
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllLists based on Board ID Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Lists/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Lists",
+						"{{bID}}"
+					]
+				},
+				"description": "This endpoint is used to fetch all lists that belong to a particular board. The boardID must be passed on as a parameter to fetch all the list present in that board."
+			},
+			"response": []
+		},
+		{
+			"name": "Get all cards based on List ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/list/{{lsID}}/cards",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"list",
+						"{{lsID}}",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get A card based on Card ID Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/card/{{cID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"card",
+						"{{cID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllActivities Based on Card ID Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/card/{{cID}}/activitys",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"card",
+						"{{cID}}",
+						"activitys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get A Lists based on List ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/List/{{lsID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"List",
+						"{{lsID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCards Based on Board ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Board/cards/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Board",
+						"cards",
+						"{{bID}}"
+					]
+				},
+				"description": "StartFragment\n\nThis endpoint is used to fetch all cards that belong to a particular board. The boardID must be passed on as a parameter to fetch all the cards present on that board.\n\nEndFragment"
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllActivities Based on Board ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/Board/activitys/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Board",
+						"activitys",
+						"{{bID}}"
+					]
+				},
+				"description": "StartFragment\n\nThis endpoint is used to fetch all activities that belong to a particular board. The boardID must be passed on as a parameter to fetch all the activities present in that board.\n\nEndFragment"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Board Content Based on Board ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Name changed\",\r\n    \"image\":{\r\n        \"color\":\"black\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Board/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Board",
+						"{{bID}}"
+					]
+				},
+				"description": "This endpoint is used to make an update to already existing boards.\n\nThe parameters to be passed in Body are:\n\nname,\n\nimage : {\n\ncolor,\n\nthumb,\n\nfull\n\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Update List Based on List ID Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"list Updated\",\r\n    \"order\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/List/{{lsID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"List",
+						"{{lsID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Card Based on Card ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"card Updated\",\r\n    \"order\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Card/{{cID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Card",
+						"{{cID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Activity based on Activity ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Activity/{{aID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Activity",
+						"{{aID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete card based on Card ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/Card/{{cID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"Card",
+						"{{cID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete list based on list ID Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/list/{{lsID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"list",
+						"{{lsID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get('lsID')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/board/{{bID}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"board",
+						"{{bID}}"
+					]
+				},
+				"description": "This endpoint is used to delete a board . The id of the baord in passed in the url."
+			},
+			"response": []
+		}
+	]
+}
